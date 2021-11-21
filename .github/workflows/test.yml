@@ -30,6 +30,44 @@ jobs:
         run: |
           edgedb --version
           edgedb-server --version
+  testproject:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create edgedb.toml
+        run: |
+          echo "[edgedb]\nserver-version = \"1.0-rc.2\"" >> edgedb.toml
+      - uses: ./
+      - name: Verify installation
+        run: |
+          edgedb query "SELECT 'Hello from GitHub Actions'"
+  testprojectlink:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    services:
+      edgedb:
+        image: edgedb/edgedb:1-rc2
+        env:
+          EDGEDB_SERVER_SECURITY: insecure_dev_mode
+        ports:
+          - 5656:5656
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create edgedb.toml
+        run: |
+          echo "[edgedb]\nserver-version = \"1.0-rc.2\"" >> edgedb.toml
+      - uses: ./
+        with:
+          project-link: edgedb://localhost:5656
+          server-version: none
+      - name: Verify installation
+        run: |
+          edgedb query "SELECT 'Hello from GitHub Actions'"
   testwin:
     runs-on: windows-latest
     steps:

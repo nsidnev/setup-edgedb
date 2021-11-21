@@ -67,7 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: edgedb/setup-edgedb@v1
-      - run: edgedb query "SELECT 'Hello from GitHub Actions!'"
+      - run: edgedb query "SELECT 'Hello from GitHub Actions'"
 ```
 
 Example (same as one above, but using `services` from GitHub Actions and `edgedb project init --link`)
@@ -91,7 +91,7 @@ jobs:
         with:
           project-link: edgedb://localhost:5656
           instance-name: ci_edgedb_instance  # optional
-      - run: edgedb query "SELECT 'Hello from GitHub Actions!'"
+      - run: edgedb query "SELECT 'Hello from GitHub Actions'"
 ```
 
 Example (creates new instance, but overrides `server-version` from `edgedb.toml` if project initialization is to be used)
@@ -108,5 +108,5 @@ jobs:
         with:
           server-version: 1.0-rc.2
           instance-name: ci_edgedb_instance
-      - run: edgedb query "SELECT 'Hello from GitHub Actions!'"
+      - run: edgedb query "SELECT 'Hello from GitHub Actions'"
 ```
